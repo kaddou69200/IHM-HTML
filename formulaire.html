@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Formulaire</title>
+    <meta charset="utf-8">
+</head>
+<body>
+
+<form>
+    <input type="button" value="Ajouter une question ouverte!" onclick="ajouterElement();" />
+    <input type="button" value="Ajouter une question a chois unique!" onclick="ajouterElementQM();" />
+
+    <div id="conteneur">
+        <div id="element">
+
+        </div>
+
+
+        <div id="elementn">
+
+        </div>
+        <div id="reponse">
+
+        </div>
+
+    </div>
+
+
+</form>
+<script>
+    var elementPattern = /^element(\d+)$/;
+    var deletePattern = /^delete(\d+)$/;
+    var reponsePattern = /^reponse(\d+)$/;
+    function ajouterReponse()
+    {
+        var Conteneur = document.getElementById('reponse');
+        if(Conteneur)
+        {
+            Conteneur.appendChild(creerReponse(dernierReponse()+1))
+        }
+    }
+    function ajouterElementQM()
+    {
+        var Conteneur = document.getElementById('conteneur');
+        if(Conteneur)
+        {
+            Conteneur.appendChild(creerElementQM(dernierElement() + 1))
+        }
+    }
+    function ajouterElement()
+    {
+        var Conteneur = document.getElementById('conteneur');
+        if(Conteneur)
+        {
+            Conteneur.appendChild(creerElement(dernierElement() + 1))
+        }
+    }
+    function dernierReponse()
+    {
+        var Conteneur = document.getElementById('reponse'), n = 0;
+        if(Conteneur)
+        {
+            var reponseID, reponseNo;
+            if(Conteneur.childNodes.length > 0)
+            {
+                for(var i = 0; i < Conteneur.childNodes.length; i++)
+                {
+                    // Ici, on vérifie qu'on peut récupérer les attributs, si ce n'est pas possible, on renvoit false, sinon l'attribut
+                    reponseID = (Conteneur.childNodes[i].getAttribute) ? Conteneur.childNodes[i].getAttribute('id') : false;
+                    if(reponseID)
+                    {
+                        reponseNo = parseInt(reponseID.replace(reponsePattern, '$1'));
+                        if(!isNaN(reponseNo) && reponseNo > n)
+                        {
+                            n = reponseNo;
+                        }
+                    }
+                }
+            }
+        }
+        return n;
+    }
+    function dernierElement()
+    {
+        var Conteneur = document.getElementById('conteneur'), n = 0;
+        if(Conteneur)
+        {
+            var elementID, elementNo;
+            if(Conteneur.childNodes.length > 0)
+            {
+                for(var i = 0; i < Conteneur.childNodes.length; i++)
+                {
+                    // Ici, on vérifie qu'on peut récupérer les attributs, si ce n'est pas possible, on renvoit false, sinon l'attribut
+                    elementID = (Conteneur.childNodes[i].getAttribute) ? Conteneur.childNodes[i].getAttribute('id') : false;
+                    if(elementID)
+                    {
+                        elementNo = parseInt(elementID.replace(elementPattern, '$1'));
+                        if(!isNaN(elementNo) && elementNo > n)
+                        {
+                            n = elementNo;
+                        }
+                    }
+                }
+            }
+        }
+        return n;
+    }
+    function creerElementQM(ID)
+    {
+        var Conteneur = document.createElement('div');
+        Conteneur.setAttribute('id', 'element' + ID);
+        var rep = document.createElement('input');
+        rep.setAttribute('type','button');
+        rep.setAttribute('value','ajouter une reponse');
+        rep.setAttribute('id', '');
+        var Test = document.createElement('p');
+        Test.textContent="Question multiple";
+        var Input = document.createElement('input');
+        Input.setAttribute('type', 'text');
+        Input.setAttribute('name', 'input' + ID);
+        Input.setAttribute('id', 'input' + ID);
+        var Delete = document.createElement('input');
+        Delete.setAttribute('type', 'button');
+        Delete.setAttribute('value', 'Supprimer n°' + ID + ' !');
+        Delete.setAttribute('id', 'delete' + ID);
+        Delete.onclick = supprimerElement;
+         rep.onclick = ajouterReponse;
+
+
+        Conteneur.appendChild(Test);
+        Conteneur.appendChild(Input);
+        Conteneur.appendChild(Delete);
+        Conteneur.appendChild(rep);
+        return Conteneur;
+    }
+
+    function creerReponse(ID)
+    {
+        var Conteneur = document.createElement('div');
+        Conteneur.setAttribute('id', 'reponse' + ID);
+
+        var  Input = document.createElement('input');
+        Input.setAttribute('type', 'text');
+        Input.setAttribute('name', 'input' + ID);
+        Input.setAttribute('id', 'input' + ID);
+
+        var Delete = document.createElement('input');
+        Delete.setAttribute('type', 'button');
+        Delete.setAttribute('value', 'Supprimer n°' + ID + ' !');
+        Delete.setAttribute('id', 'delete' + ID);
+        Delete.onclick = supprimerReponse;
+
+
+        Conteneur.appendChild(Input);
+        Conteneur.appendChild(Delete);
+
+        return Conteneur;
+    }
+
+    function creerElement(ID)
+    {
+        var Conteneur = document.createElement('div');
+        Conteneur.setAttribute('id', 'element' + ID);
+        var Test = document.createElement('p');
+        Test.textContent="Question ouverte";
+        var Input = document.createElement('input');
+        Input.setAttribute('type', 'text');
+        Input.setAttribute('name', 'input' + ID);
+        Input.setAttribute('id', 'input' + ID);
+        var Delete = document.createElement('input');
+        Delete.setAttribute('type', 'button');
+        Delete.setAttribute('value', 'Supprimer n°' + ID + ' !');
+        Delete.setAttribute('id', 'delete' + ID);
+        Delete.onclick = supprimerElement;
+        Conteneur.appendChild(Test);
+        Conteneur.appendChild(Input);
+        Conteneur.appendChild(Delete);
+        return Conteneur;
+    }
+    function supprimerReponse()
+    {
+        var Conteneur = document.getElementById('reponse');
+        var n = parseInt(this.id.replace(deletePattern, '$1'));
+        if(Conteneur && !isNaN(n))
+        {
+            var reponseID, reponseNo;
+            if(Conteneur.childNodes.length > 0)
+            {
+                for(var i = 0; i < Conteneur.childNodes.length; i++)
+                {
+                    reponseID = (Conteneur.childNodes[i].getAttribute) ? Conteneur.childNodes[i].getAttribute('id') : false;
+                    if(reponseID)
+                    {
+                        reponseNo = parseInt(reponseID.replace(reponsePattern, '$1'));
+                        if(!isNaN(reponseNo) && reponseNo  === n)
+                        {
+                            Conteneur.removeChild(Conteneur.childNodes[i]);
+
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    function supprimerElement()
+    {
+        var Conteneur = document.getElementById('conteneur');
+
+        var n = parseInt(this.id.replace(deletePattern, '$1'));
+        if(Conteneur && !isNaN(n))
+        {
+            var elementID, elementNo;
+            if(Conteneur.childNodes.length > 0)
+            {
+                for(var i = 0; i < Conteneur.childNodes.length; i++)
+                {
+                    elementID = (Conteneur.childNodes[i].getAttribute) ? Conteneur.childNodes[i].getAttribute('id') : false;
+                    if(elementID)
+                    {
+                        elementNo = parseInt(elementID.replace(elementPattern, '$1'));
+                        if(!isNaN(elementNo) && elementNo  === n)
+                        {
+                            Conteneur.removeChild(Conteneur.childNodes[i]);
+
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Formulaire</title>
+  <meta charset="utf-8">
+</head>
+	<body>
+		
+		
+	<form name="formulaireDynamique">
+		<input type="button" onclick="unique(this);" value="ajouter une question unique"/>
+		<input type="button" onclick="unique(this);" value="ajouter une  unique"/>
+   <br /><br />
+   <input type="submit" value="soumettre"/>
+</form>
+		
+		<script type="text/Javascript" >
+   function unique(element){
+  
+			  var formulaire = window.document.formulaireDynamique;
+			  // On clone le bouton d'unique
+			  var unique = element.cloneNode(true);
+			  // Crée un nouvel élément de type "input"
+			  var check = document.createElement("input");
+			  // Les valeurs encodée dans le formulaire seront stockées dans un tableau
+			  check.name = "nreponse[]";
+			  check.type = "radio";
+			  
+			  var champ = document.createElement("textarea");
+			  champ.name = "reponse[]";
+			  champ.rows = "1";
+			  
+			  var quest = document.createElement("textarea");
+			  champ.name = "question[]";
+			  champ.rows = "1";
+			  
+			  var ajt = document.createElement("input");
+			  ajt.type = "button";
+			  ajt.onclick = "reponse(this,ajt)"
+			  ajt.value = "ajouter une réponse"
+				
+			  var sup = document.createElement("input");
+			  sup.value = "supprimer un champ";
+			  sup.type = "button";
+			  // unique de l'événement onclick
+			  sup.onclick = function onclick(event)
+				 {suppression(this);};
+				
+			  // On crée un nouvel élément de type "p" et on insère le champ l'intérieur.
+			  var bloc = document.createElement("p");
+			  
+			  bloc.appendChild(quest);
+			  
+			  bloc.appendChild(ajt);
+			  
+			  
+			  
+			  formulaire.insertBefore(unique, element);
+			  formulaire.insertBefore(sup, element);
+			  formulaire.insertBefore(bloc, element);
+			  
+	
+	}
+	function ajout(elment){
+			    var formulaire = window.document.formulaireDynamique;
+				var unique = elemnt.cloneNode(true);
+			  // Crée un nouvel élément de type "input"
+			  var check = document.createElement("input");
+			  // Les valeurs encodée dans le formulaire seront stockées dans un tableau
+			  check.name = "nreponse[]";
+			  check.type = "radio";
+			  
+			  var champ = document.createElement("textarea");
+			  champ.name = "reponse[]";
+			  champ.rows = "1";
+			  
+			  var quest = document.createElement("textarea");
+			  champ.name = "question[]";
+			  champ.rows = "1";
+			  
+			  var ajt = document.createElement("input");
+			  ajt.type = "button";
+			  ajt.onclick = "reponse(this,ajt)"
+			  ajt.value = "ajouter une réponse"
+				
+			  var sup = document.createElement("input");
+			  sup.value = "supprimer un champ";
+			  sup.type = "button";
+			  // unique de l'événement onclick
+			  sup.onclick = function onclick(event)
+				 {suppression(this);};
+				
+			  // On crée un nouvel élément de type "p" et on insère le champ l'intérieur.
+			  var bloc = document.createElement("p");
+			  
+			  
+			  bloc.appendChild(ajt);
+			  
+			  bloc.appendChild(check);
+			  
+			  bloc.appendChild(champ);
+			  
+			  formulaire.insertBefore(unique, element);
+			  formulaire.insertBefore(sup, element);
+			  formulaire.insertBefore(bloc, element);
+			  
+	
+	}
+	}
+
+	  function suppression(element){
+		   var formulaire = window.document.formulaireDynamique;
+				
+		   // Supprime le bouton d'unique
+		   formulaire.removeChild(element.previousSibling);
+		   // Supprime le champ
+		   formulaire.removeChild(element.nextSibling);
+		   // Supprime le bouton de suppression
+		   formulaire.removeChild(element);
+	}
+</script>
+
+	</body>
+</html>
