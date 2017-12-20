@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Vue</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.css">
+</head>
+<body>
+
+    <div class="ui main container" id="app">
+
+        <navbar :modif="modif" :formu="formu" :upco="upco" @formulaire="formulaire" @modification="modification" @upcoming="upcoming" ></navbar>
+
+        <formspage :question="question"  @suppression="suppression" v-if="curentpage === 'formulaire' " ></formspage>
+        {{idasupprimer}}
+
+       <editformspage :title="title" :tabloadform="tabloadform" :newtab="newtab" v-if="curentpage ==='newform'" @ajtquest="ajtquest"></editformspage>
+
+        <input type="button" @click="tab">
+        <!-- <SubjectPage></SubjectPage>
+        <EditSubjectPage></EditSubjectPage> -->
+
+    </div>
+
+
+
+</div>
+<div class="ui violet vertical footer segment">
+    <div class="ui container">
+         &copy; Copyright 2017 | Nassim EL ABBOUBI & Tristan MATTEOLI - Tous droits réservés
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.11/vue.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
