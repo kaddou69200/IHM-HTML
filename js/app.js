@@ -133,7 +133,7 @@ let editopenquestion = {
                       <button class="ui negative button" @click="enlv">-</button>
                       <button class="ui positive button" @click="increment">+</button>
                     </div>
-               </div>`,
+               </div>`
 
 };
 
@@ -294,6 +294,11 @@ new Vue ({
                 id: 2,
                 title: "Le troisième questionnaire",
                 description: "Ici sera la description du troisième questionnaire séléctionné par l'utilisateur"
+            },
+            3:{
+                id: 3,
+                title: "Le quatrième questionnaire",
+                description :"Ici sera la description du quatrième questionnaire séléctionné par l'utilisateur"
             }
         },
         idasupprimer: -1,
