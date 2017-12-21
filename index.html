@@ -14,7 +14,7 @@
         <formspage :question="question"  @subject="subject"  @suppression="suppression" v-if="curentpage === 'formulaire' " ></formspage>
 
 
-       <editformspage  :count="count" :title="title" :tabloadform="tabloadform" :newtab="newtab" v-if="curentpage ==='newform'" @ajtquest="ajtquest"></editformspage>
+       <editformspage  :count="count" :title="title" :description="description" :tabloadform="tabloadform" :newtab="newtab" v-if="curentpage ==='newform'" @ajtquest="ajtquest"></editformspage>
 
         <subjectpage  v-if="curentpage ==='subject'" :notreformulaire="notreformulaire"></subjectpage>
         <!-- <EditSubjectPage></EditSubjectPage> -->

@@ -10,7 +10,7 @@ let navbar = {
 
     template: `<div class="ui three item menu">
                         <a class="ui violet item" :class="formu" v-on:click="formulaire">Formulaire</a>
-                        <a class="ui violet item" :class="modif" v-on:click="modification">Modification Page</a>
+                        <a class="ui violet item" :class="modif" v-on:click="modification">Graphique (upcomming)</a>
                         <a class="ui violet item" :class="upco" v-on:click="upcoming">Upcoming Events</a> 
                 </div>`
     ,
@@ -39,7 +39,6 @@ let shortformspage = {
         idasupprimer: Number
     },
     template:`<div>
-                <p>{{id}}</p>
                 <h2 class="ui center aligned header">{{ title }}</h2>
 
                 <h4 class="ui center aligned header">
@@ -127,7 +126,7 @@ let editopenquestion = {
         }
     },
     template: `<div>
-                    <input type="text" :value="count">
+                    {{count}}
                     <div class="circular ui icon buttons">
                       <button class="ui negative button" @click="enlv">-</button>
                       <button class="ui positive button" @click="increment">+</button>
@@ -169,6 +168,7 @@ let editformspage = {
     components:{ editquestion },
     props:{
       title: String,
+        description: String,
         tabloadform: Object
 
     },
@@ -176,9 +176,9 @@ let editformspage = {
                   <form class="ui form">
                     <div class="field">
                       <div class="seven wide field">
-                        <input name="title" placeholder="Titre" type="text" value="title">
+                        <input name="title" placeholder="Titre" type="text" :value="title">
                       </div>
-                        <textarea rows="2" type="text" placeholder="Description">Description</textarea>
+                        <textarea rows="2" type="text" placeholder="Description" :value="description">Description</textarea>
                       <br><br>
 
                       <br><br>
@@ -252,11 +252,14 @@ let subjectpage = {
         notreformulaire: Object
     },
     template: `<div>
-            <div v-for="notreformulaire in notreformulaire" class="ui center aligned header">
-                    <qouverte v-if="notreformulaire.typequest ==='QO'" :title="notreformulaire.titlequest" :nbmot="notreformulaire.nbmot"></qouverte>
-                    <qmultiple v-if="notreformulaire.typequest ==='QM'" :title="notreformulaire.titlequest" :reponse="notreformulaire.reponse"></qmultiple>
-                    <qunique v-if="notreformulaire.typequest ==='QU'" :title="notreformulaire.titlequest" :reponse="notreformulaire.reponse"></qunique>
-               </div>
+                    <div v-for="notreformulaire in notreformulaire" class="ui center aligned header">
+                        <qouverte v-if="notreformulaire.typequest ==='QO'" :title="notreformulaire.titlequest" :nbmot="notreformulaire.nbmot"></qouverte>
+                        <qmultiple v-if="notreformulaire.typequest ==='QM'" :title="notreformulaire.titlequest" :reponse="notreformulaire.reponse"></qmultiple>
+                        <qunique v-if="notreformulaire.typequest ==='QU'" :title="notreformulaire.titlequest" :reponse="notreformulaire.reponse"></qunique>
+                   </div>
+                   <div>
+                       <button class="ui right  button"><i class="save icon"></i></button>
+                   </div>
                </div>`
 
 };
