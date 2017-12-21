@@ -113,20 +113,22 @@ let editclosedquestion = {
 };
 
 let editopenquestion = {
-    props:  {
-        count: Number
+    data: function(){
+        return {
+            pls: 0
+        }
     },
 
     methods:{
         enlv: function(){
-            return this.$parent.$parent.$data.count --
+            this.pls --
         },
         increment: function () {
-           return this.$parent.$parent.$data.count ++
+           this.pls ++
         }
     },
     template: `<div>
-                    {{count}}
+                    <input :value="pls">
                     <div class="circular ui icon buttons">
                       <button class="ui negative button" @click="enlv">-</button>
                       <button class="ui positive button" @click="increment">+</button>
@@ -155,7 +157,7 @@ let editquestion = {
                     <input type="text" :value="titlequest">
                     </div>
 
-                    <editopenquestion v-if="typequest === 'QO' " :newtab="newtab" :count="count"></editopenquestion>
+                    <editopenquestion v-if="typequest === 'QO' " :newtab="newtab" ></editopenquestion>
                     <editclosedquestion v-if ="typequest === 'QM'" :reponse="reponse" :newtab="newtab"></editclosedquestion>
                     <editclosedquestion v-else-if ="typequest === 'QC'" :reponse="reponse" :newtab="newtab"></editclosedquestion>
                     <br><br>
@@ -271,7 +273,7 @@ new Vue ({
         curentpage: "formulaire",
         formu: "active",
         modif: "",
-        count: 1,
+
         upco: "",
 
         title: "titre d'un formulaire",
