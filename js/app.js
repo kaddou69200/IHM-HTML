@@ -11,7 +11,7 @@ let navbar = {
     template: `<div class="ui three item menu">
                         <a class="ui violet item" :class="formu" v-on:click="formulaire">Formulaire</a>
                         <a class="ui violet item" :class="modif" v-on:click="modification">Modification Page</a>
-                        <a class="ui violet item" :class="upco" v-on:click="upcoming">Upcoming Events</a>
+                        <a class="ui violet item" :class="upco" v-on:click="upcoming">Upcoming Events</a> 
                 </div>`
     ,
 
@@ -47,14 +47,20 @@ let shortformspage = {
                 </h4>
                 <div class="ui center aligned header">
                   <input type="button" class="mini ui inverted violet button" name="supression" value="Supression" @click="suppression">
-                  <input type="button" class="mini ui inverted violet button" name="modifcation" value="Modifcation">
-                  <input type="button" class="mini ui inverted violet button" name="reponse" value="Répondre" ><br/><br/>
+                  <input type="button" class="mini ui inverted violet button" name="modifcation" value="Modifcation" @click="newform">
+                  <input type="button" class="mini ui inverted violet button" name="reponse" value="Répondre" @click="subject"><br/><br/>
                 </div>
 </div>`,
     methods:{
         suppression: function(){
             this.$parent.$parent.$data.idasupprimer=this.id ;
             this.$emit('suppression')
+        },
+        subject: function(){
+            this.$emit('subject')
+        },
+        newform: function(){
+            this.$parent.$parent.$data.curentpage="newform"
         }
     }
 };
@@ -66,17 +72,18 @@ let formspage = {
     components: { shortformspage },
     template: `<div>
                 <div v-for="question in question">
-                    <shortformspage @suppression="suppression" :idasupprimer="idasupprimer" :title="question.title" :description="question.description" :id="question.id" ></shortformspage>
+                    <shortformspage  @subject="subject" @suppression="suppression" :idasupprimer="idasupprimer" :title="question.title" :description="question.description" :id="question.id" ></shortformspage>
                 </div>
-                <input v-on:click="newform" type="button" class="ui inverted violet button" value="Nouveau formulaire" >
+                <input  type="button" class="ui inverted violet button" value="Nouveau formulaire" >
                 <br><br>
 </div>`,
     methods:{
         suppression: function(){
             this.$emit('suppression')
         },
-        newform: function(){
-            this.$parent.$data.curentpage="newform"
+
+        subject: function(){
+            this.$emit('subject')
         }
     }
 };
@@ -107,13 +114,26 @@ let editclosedquestion = {
 };
 
 let editopenquestion = {
+    props:  {
+        count: Number
+    },
+
+    methods:{
+        enlv: function(){
+            return this.$parent.$parent.$data.count --
+        },
+        increment: function () {
+           return this.$parent.$parent.$data.count ++
+        }
+    },
     template: `<div>
-                    <input type="text" value="Ceci est un compteur">
+                    <input type="text" :value="count">
                     <div class="circular ui icon buttons">
-                      <button class="ui negative button">-</button>
-                      <button class="ui positive button">+</button>
+                      <button class="ui negative button" @click="enlv">-</button>
+                      <button class="ui positive button" @click="increment">+</button>
                     </div>
-               </div>`
+               </div>`,
+
 };
 
 let editquestion = {
@@ -122,7 +142,8 @@ let editquestion = {
         titlequest: {type: String, default: "titre de votre question"},
         typequest: {type: String, default: 'QO'    },
         reponse: {type: Object, default: function(){ return } },
-        newtab: Object
+        newtab: Object,
+        count: Number
 
     },
     template: `<div><input type="button" class="ui right floated inverted red button" value="supprimer">
@@ -135,7 +156,7 @@ let editquestion = {
                     <input type="text" :value="titlequest">
                     </div>
 
-                    <editopenquestion v-if="typequest === 'QO' " :newtab="newtab"></editopenquestion>
+                    <editopenquestion v-if="typequest === 'QO' " :newtab="newtab" :count="count"></editopenquestion>
                     <editclosedquestion v-if ="typequest === 'QM'" :reponse="reponse" :newtab="newtab"></editclosedquestion>
                     <editclosedquestion v-else-if ="typequest === 'QC'" :reponse="reponse" :newtab="newtab"></editclosedquestion>
                     <br><br>
@@ -182,13 +203,72 @@ let editformspage = {
     }
 };
 
+let qunique = {
+    props:{
+        title: String,
+        reponse: Object
+    },
+    template: `<div>
+                 <h2 class="ui center aligned header">{{ title }}</h2>
+                 <div  v-for="reponse in reponse" class="ui radio checkbox">
+                    <input  type="radio" :id="reponse.id" :name="reponse"><label for="reponse.id">{{ reponse.rep }}</label>
+                 </div>
+                 <br><br> 
+             </div>`
+};
+
+let qmultiple = {
+    props:{
+        reponse: Object,
+        title: String
+    },
+    template: `<div>
+                 <h2 class="ui center aligned header">{{ title }}</h2>
+                 <div class="ui checkbox" v-for="reponse in reponse">
+                    <input type="checkbox"><label>{{ reponse.rep }}</label>
+                </div>
+                <br><br> 
+             </div>`
+};
+
+let qouverte = {
+    props:{
+        title: String,
+        nbmot: Number
+    },
+    template: `<div>
+                 <h2 class="ui center aligned header">{{ title }}</h2>
+                 <div 
+                      <input class="ui violet inverted button" type="text" v-for="nbmot in nbmot" row=3>
+                  </div>
+                 <br><br>
+             </div>`
+
+};
+
+let subjectpage = {
+    components:{ qouverte, qmultiple, qunique },
+    props:{
+        notreformulaire: Object
+    },
+    template: `<div>
+            <div v-for="notreformulaire in notreformulaire" class="ui center aligned header">
+                    <qouverte v-if="notreformulaire.typequest ==='QO'" :title="notreformulaire.titlequest" :nbmot="notreformulaire.nbmot"></qouverte>
+                    <qmultiple v-if="notreformulaire.typequest ==='QM'" :title="notreformulaire.titlequest" :reponse="notreformulaire.reponse"></qmultiple>
+                    <qunique v-if="notreformulaire.typequest ==='QU'" :title="notreformulaire.titlequest" :reponse="notreformulaire.reponse"></qunique>
+               </div>
+               </div>`
+
+};
+
 new Vue ({
     el: '#app' ,
-    components: { navbar, formspage, editformspage },
+    components: { navbar, formspage, editformspage, subjectpage },
     data: {
         curentpage: "formulaire",
         formu: "active",
         modif: "",
+        count: 1,
         upco: "",
 
         title: "titre d'un formulaire",
@@ -228,27 +308,75 @@ new Vue ({
                 }
             }
         },
-        newtab: {}
+        newtab: {},
+        notreformulaire: {
+            0:{
+                id:0,
+                titlequest: "Voici une question ouverte",
+                typequest: "QO",
+                nbmot:10
+
+            },
+            1:{
+                id:1,
+                titlequest: "Voici une question à choix multiple",
+                typequest: "QM",
+                reponse:{
+                    0: { id: 0,
+                        rep:"une premiere reponse"},
+                    1: { id: 1,
+                        rep:"une seconde reponse"},
+                }
+            },
+            2:{
+                id:2,
+                titlequest: "Voici une seconde question ouverte",
+                typequest: "QO",
+                nbmot:5
+            },
+            3:{
+                id:3,
+                titlequest: "Voici une question à choix unique",
+                typequest: "QU",
+                reponse:{
+                    0: { id: 0,
+                        rep:"une premiere reponse"},
+                    1: { id: 1,
+                        rep:"une seconde reponse"},
+                }
+            },
+            4:{
+                id:4,
+                titlequest: "Voici une seconde question à choix multiple",
+                typequest: "QM",
+                reponse:{
+                    0: { id: 0,
+                        rep:"une premiere reponse"},
+                    1: { id: 1,
+                        rep:"une seconde reponse"},
+                }
+            }
+        }
 
 
     },
     methods: {
         formulaire: function(){
-            this.formu="active",
-            this.modif="",
-            this.upco="",
+            this.formu="active";
+            this.modif="";
+            this.upco="";
             this.curentpage="formulaire"
         },
         modification: function(){
-            this.upco = " " ,
-            this.formu = " " ,
-            this.modif = "active",
+            this.upco = " " ;
+            this.formu = " " ;
+            this.modif = "active";
             this.curentpage = "modification"
         },
         upcoming: function(){
-            this.formu=" ",
-            this.modif=" ",
-            this.upco="active",
+            this.formu=" ";
+            this.modif=" ";
+            this.upco="active";
             this.curentpage="upcoming"
         },
         suppression: function(){
@@ -260,6 +388,9 @@ new Vue ({
         },
         ajtquest: function (){
             this.tabloadform.push({'Object.keys(this.tabloadform).length': {id:Object.keys(this.tabloadform).length} })
+        },
+        subject: function(){
+            this.curentpage = "subject";
         }
     }
 })

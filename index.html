@@ -11,14 +11,13 @@
 
         <navbar :modif="modif" :formu="formu" :upco="upco" @formulaire="formulaire" @modification="modification" @upcoming="upcoming" ></navbar>
 
-        <formspage :question="question"  @suppression="suppression" v-if="curentpage === 'formulaire' " ></formspage>
-        {{idasupprimer}}
+        <formspage :question="question"  @subject="subject"  @suppression="suppression" v-if="curentpage === 'formulaire' " ></formspage>
 
-       <editformspage :title="title" :tabloadform="tabloadform" :newtab="newtab" v-if="curentpage ==='newform'" @ajtquest="ajtquest"></editformspage>
 
-        <input type="button" @click="tab">
-        <!-- <SubjectPage></SubjectPage>
-        <EditSubjectPage></EditSubjectPage> -->
+       <editformspage  :count="count" :title="title" :tabloadform="tabloadform" :newtab="newtab" v-if="curentpage ==='newform'" @ajtquest="ajtquest"></editformspage>
+
+        <subjectpage  v-if="curentpage ==='subject'" :notreformulaire="notreformulaire"></subjectpage>
+        <!-- <EditSubjectPage></EditSubjectPage> -->
 
     </div>
 
